@@ -1,15 +1,13 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-// app/api/transactions/[id]/route.ts
+// src/app/api/transactions/[id]/route.ts
+
 import { NextResponse } from "next/server";
 import { ObjectId } from "mongodb";
 import clientPromise from "../../../../lib/mongodb";
 
-type Context = {
-  params: { id: string };
-  searchParams: { [key: string]: string | string[] | undefined };
-};
-
-export async function PUT(request: Request, { params, searchParams }: Context) {
+export async function PUT(
+  request: Request,
+  { params }: { params: { id: string } }
+) {
   const body = await request.json();
   const { amount, date, description, category } = body;
   if (!amount || !date || !description || !category) {
@@ -36,7 +34,7 @@ export async function PUT(request: Request, { params, searchParams }: Context) {
 
 export async function DELETE(
   request: Request,
-  { params, searchParams }: Context
+  { params }: { params: { id: string } }
 ) {
   const client = await clientPromise;
   const db = client.db();
