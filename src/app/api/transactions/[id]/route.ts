@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 // src/app/api/transactions/[id]/route.ts
 import { NextResponse } from "next/server";
 import { ObjectId } from "mongodb";
