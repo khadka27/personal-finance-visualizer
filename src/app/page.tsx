@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import TransactionForm from "../components/TransactionForm";
 import TransactionList, { Transaction } from "../components/TransactionList";
 import MonthlyExpensesChart from "../components/MonthlyExpensesChart";
+import CategoryPieChart from "../components/CategoryPieChart";
+import Dashboard from "../components/Dashboard";
 
 export default function Home() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -19,7 +21,12 @@ export default function Home() {
     fetchTransactions();
   }, []);
 
-  const addTransaction = async (transaction: { amount: number | string; date: string; description: string }) => {
+  const addTransaction = async (transaction: {
+    amount: number | string;
+    date: string;
+    description: string;
+    category: string;
+  }) => {
     const res = await fetch("/api/transactions", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -30,7 +37,15 @@ export default function Home() {
     }
   };
 
-  const updateTransaction = async (id: string, updatedData: { amount: number | string; date: string; description: string }) => {
+  const updateTransaction = async (
+    id: string,
+    updatedData: {
+      amount: number | string;
+      date: string;
+      description: string;
+      category: string;
+    }
+  ) => {
     const res = await fetch(`/api/transactions/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -51,15 +66,25 @@ export default function Home() {
   };
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-4">Personal Finance Visualizer - Stage 1</h1>
+    <div className="container mx-auto p-4 space-y-8">
+      <h1 className="text-3xl font-bold text-center">
+        Personal Finance Visualizer - Stage 2
+      </h1>
+
+      <Dashboard transactions={transactions} />
+
       <TransactionForm onSubmit={addTransaction} />
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <MonthlyExpensesChart transactions={transactions} />
+        <CategoryPieChart transactions={transactions} />
+      </div>
+
       <TransactionList
         transactions={transactions}
         onDelete={deleteTransaction}
         onUpdate={updateTransaction}
       />
-      <MonthlyExpensesChart transactions={transactions} />
     </div>
   );
 }

@@ -9,6 +9,7 @@ export type Transaction = {
   amount: number;
   date: string;
   description: string;
+  category: string;
 };
 
 type TransactionListProps = {
@@ -31,7 +32,9 @@ export default function TransactionList({
         {transactions.map((tx) => (
           <Card key={tx._id} className="p-4">
             <CardHeader className="flex justify-between items-center">
-              <span className="text-lg font-bold">Transaction</span>
+              <span className="text-lg font-bold">
+                {tx.category} Transaction
+              </span>
               <div className="space-x-2">
                 <Button
                   variant="outline"

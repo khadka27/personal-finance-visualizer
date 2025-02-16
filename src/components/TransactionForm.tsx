@@ -8,6 +8,7 @@ export type TransactionData = {
   amount: number | string;
   date: string;
   description: string;
+  category: string;
   _id?: string;
 };
 
@@ -15,6 +16,8 @@ type TransactionFormProps = {
   onSubmit: (data: TransactionData) => void;
   initialData?: TransactionData;
 };
+
+const categories = ["Food", "Transport", "Entertainment", "Utilities", "Other"];
 
 export default function TransactionForm({
   onSubmit,
@@ -27,20 +30,24 @@ export default function TransactionForm({
       : ""
   );
   const [description, setDescription] = useState(initialData.description || "");
+  const [category, setCategory] = useState(
+    initialData.category || categories[0]
+  );
   const [error, setError] = useState("");
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    if (!amount || !date || !description) {
+    if (!amount || !date || !description || !category) {
       setError("All fields are required.");
       return;
     }
     setError("");
-    onSubmit({ amount, date, description, _id: initialData._id });
+    onSubmit({ amount, date, description, category, _id: initialData._id });
     if (!initialData._id) {
       setAmount("");
       setDate("");
       setDescription("");
+      setCategory(categories[0]);
     }
   };
 
@@ -84,6 +91,22 @@ export default function TransactionForm({
           placeholder="Enter description"
           className="w-full"
         />
+      </div>
+
+      <div className="grid gap-1">
+        <Label htmlFor="category">Category</Label>
+        <select
+          id="category"
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+          className="border rounded p-2 w-full"
+        >
+          {categories.map((cat) => (
+            <option key={cat} value={cat}>
+              {cat}
+            </option>
+          ))}
+        </select>
       </div>
 
       <Button type="submit" className="w-full">

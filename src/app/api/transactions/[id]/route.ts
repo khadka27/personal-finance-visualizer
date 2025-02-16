@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-// src/app/api/transactions/[id]/route.ts
+// app/api/transactions/[id]/route.ts
 import { NextResponse } from "next/server";
 import { ObjectId } from "mongodb";
 import clientPromise from "../../../../lib/mongodb";
@@ -11,8 +11,8 @@ type Context = {
 
 export async function PUT(request: Request, { params, searchParams }: Context) {
   const body = await request.json();
-  const { amount, date, description } = body;
-  if (!amount || !date || !description) {
+  const { amount, date, description, category } = body;
+  if (!amount || !date || !description || !category) {
     return NextResponse.json(
       { error: "Missing required fields" },
       { status: 400 }
@@ -22,6 +22,7 @@ export async function PUT(request: Request, { params, searchParams }: Context) {
     amount: parseFloat(amount),
     date: new Date(date),
     description,
+    category,
   };
   const client = await clientPromise;
   const db = client.db();

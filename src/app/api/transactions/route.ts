@@ -12,8 +12,8 @@ export async function GET() {
 
 export async function POST(request: Request) {
   const body = await request.json();
-  const { amount, date, description } = body;
-  if (!amount || !date || !description) {
+  const { amount, date, description, category } = body;
+  if (!amount || !date || !description || !category) {
     return NextResponse.json(
       { error: "Missing required fields" },
       { status: 400 }
@@ -23,6 +23,7 @@ export async function POST(request: Request) {
     amount: parseFloat(amount),
     date: new Date(date),
     description,
+    category,
   };
   const client = await clientPromise;
   const db = client.db();
