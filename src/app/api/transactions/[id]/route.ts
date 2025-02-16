@@ -5,10 +5,8 @@ import clientPromise from "../../../../lib/mongodb";
 
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string | string[] } }
+  { params }: { params: { id: string } }
 ) {
-  // Ensure id is a string
-  const id = Array.isArray(params.id) ? params.id[0] : params.id;
   const body = await request.json();
   const { amount, date, description, category } = body;
   if (!amount || !date || !description || !category) {
@@ -27,7 +25,7 @@ export async function PUT(
   const db = client.db();
   const collection = db.collection("transactions");
   await collection.updateOne(
-    { _id: new ObjectId(id) },
+    { _id: new ObjectId(params.id) },
     { $set: updatedTransaction }
   );
   return NextResponse.json({ message: "Transaction updated" });
@@ -35,12 +33,11 @@ export async function PUT(
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string | string[] } }
+  { params }: { params: { id: string } }
 ) {
-  const id = Array.isArray(params.id) ? params.id[0] : params.id;
   const client = await clientPromise;
   const db = client.db();
   const collection = db.collection("transactions");
-  await collection.deleteOne({ _id: new ObjectId(id) });
+  await collection.deleteOne({ _id: new ObjectId(params.id) });
   return NextResponse.json({ message: "Transaction deleted" });
 }
