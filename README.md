@@ -56,7 +56,6 @@ A simple web application for tracking personal finances. Users can manage transa
    cd personal-finance-visualizer
    ```
 
-````
 
 2. **Install dependencies:**
 
@@ -131,4 +130,4 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 This README provides an overview, setup instructions, and details on features, technologies, and API endpoints to help users understand and run your project. Feel free to customize it further to match your project's specifics.
 ```
-````
+
